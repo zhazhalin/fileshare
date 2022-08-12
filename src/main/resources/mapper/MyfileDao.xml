@@ -32,44 +32,44 @@
           file_id, file_contentType, file_name, file_url, createTime, updateTime, is_deleted, dowload_count, description, file_img, file_size, file_user, is_share
         from myfile
         <where>
-            <if test="fileId != null">
-                and file_id = #{fileId}
+            <if test="myfile.fileId != null">
+                and file_id = #{myfile.fileId}
             </if>
-            <if test="fileContenttype != null and fileContenttype != ''">
-                and file_contentType = #{fileContenttype}
+            <if test="myfile.fileContenttype != null and myfile.fileContenttype != ''">
+                and file_contentType = #{myfile.fileContenttype}
             </if>
-            <if test="fileName != null and fileName != ''">
-                and file_name LIKE concat('%',#{fileName},'%')
+            <if test="myfile.fileName != null and fileName != ''">
+                and file_name LIKE concat('%',#{myfile.fileName},'%')
             </if>
-            <if test="fileUrl != null and fileUrl != ''">
-                and file_url = #{fileUrl}
+            <if test="myfile.fileUrl != null and fileUrl != ''">
+                and file_url = #{myfile.fileUrl}
             </if>
-            <if test="createtime != null">
-                and createTime = #{createtime}
+            <if test="myfile.createtime != null">
+                and createTime = #{myfile.createtime}
             </if>
-            <if test="updatetime != null">
-                and updateTime = #{updatetime}
+            <if test="myfile.updatetime != null">
+                and updateTime = #{myfile.updatetime}
             </if>
-            <if test="isDeleted != null and isDeleted != ''">
-                and is_deleted = #{isDeleted}
+            <if test="myfile.isDeleted != null and myfile.isDeleted != ''">
+                and is_deleted = #{myfile.isDeleted}
             </if>
-            <if test="dowloadCount != null">
-                and dowload_count = #{dowloadCount}
+            <if test="myfile.dowloadCount != null">
+                and dowload_count = #{myfile.dowloadCount}
             </if>
-            <if test="description != null and description != ''">
-                and description = #{description}
+            <if test="myfile.description != null and myfile.description != ''">
+                and description = #{myfile.description}
             </if>
-            <if test="fileImg != null and fileImg != ''">
-                and file_img = #{fileImg}
+            <if test="myfile.fileImg != null and myfile.fileImg != ''">
+                and file_img = #{myfile.fileImg}
             </if>
-            <if test="fileSize != null">
-                and file_size = #{fileSize}
+            <if test="myfile.fileSize != null">
+                and file_size = #{myfile.fileSize}
             </if>
-            <if test="fileUser != null">
-                and file_user = #{fileUser}
+            <if test="myfile.fileUser != null">
+                and file_user = #{myfile.fileUser}
             </if>
-            <if test="isShare != null and isShare != ''">
-                and is_share = #{isShare}
+            <if test="myfile.isShare != null and myfile.isShare != ''">
+                and is_share = #{myfile.isShare}
             </if>
         </where>
         limit #{offset}, #{limit}

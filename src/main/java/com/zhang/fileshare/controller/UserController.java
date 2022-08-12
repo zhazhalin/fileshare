@@ -44,7 +44,7 @@ public class UserController {
      * @return
      */
     @ApiOperation("用户登录")
-    @PostMapping("/login/{username}/{password}")
+    @GetMapping("/login/{username}/{password}")
     public Result login(@PathVariable String username, @PathVariable String password) {
         Result result = this.userService.login(username, password);
         return result;

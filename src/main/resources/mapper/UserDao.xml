@@ -32,7 +32,7 @@
     <select id="queryAllByLimit" resultMap="UserMap">
         select
           user_id, user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ, user_sex, user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted
-        from file-share.user
+        from user
         limit #{offset}, #{limit}
     </select>
 
@@ -41,7 +41,7 @@
         select
         user_id, user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ, user_sex,
         user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted
-        from file-share.user
+        from user
         <where>
             <if test="userId != null">
                 and user_id = #{userId}
@@ -99,7 +99,7 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
-        insert into file-share.user(user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ, user_sex, user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted)
+        insert into user(user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ, user_sex, user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted)
         values (#{userName}, #{userNickname}, #{userPwd}, #{userSalt}, #{userPhone}, #{userEmail}, #{userQq}, #{userSex}, #{userBirthday}, #{userImg}, #{createtime}, #{updatetime}, #{deletetime}, #{isDeleted})
     </insert>
 
@@ -115,7 +115,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="userId" useGeneratedKeys="true">
-        insert into file-share.user(user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ,
+        insert into user(user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ,
         user_sex, user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted)
         values
         <foreach collection="entities" item="entity" separator=",">
@@ -133,7 +133,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update file-share.user
+        update user
         <set>
             <if test="userName != null and userName != ''">
                 user_name = #{userName},

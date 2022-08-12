@@ -6,10 +6,7 @@ import com.zhang.fileshare.utils.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -37,7 +34,7 @@ public class MyfileController {
      * @param type 文件类型
      * @return 返回条件查询的结果集
      */
-    @GetMapping("/queryByType/{type}")
+    @PostMapping("/queryByType/{type}")
     @ApiOperation("根据类型查询所有共享文件")
     public Result<List<Myfile>> queryByType(@PathVariable("type") String type) {
         return myfileService.queryByType(type);
@@ -49,7 +46,7 @@ public class MyfileController {
      * @param fileName
      * @return
      */
-    @GetMapping("/searchFile/{fileName}")
+    @PostMapping("/searchFile/{fileName}")
     @ApiOperation("根据文件名称进行搜索")
     public Result searchFile(@PathVariable("fileName") String fileName) {
         List<Myfile> myfiles = myfileService.searchFile(fileName);
@@ -62,7 +59,7 @@ public class MyfileController {
      * @param fileId
      * @return 返回文件地址
      */
-    @GetMapping("/preview/{fileId}")
+    @PostMapping("/preview/{fileId}")
     @ApiOperation("预览文件")
     public Result previewFile(@PathVariable("fileId") Long fileId) {
         Myfile myfile = myfileService.queryById(fileId);
@@ -75,13 +72,14 @@ public class MyfileController {
      * @param fileId
      * @return
      */
-    @GetMapping("/reclaim/{fileId}")
+    @PostMapping("/reclaim/{fileId}")
     @ApiOperation("将文件放入回收站")
     public Result reclaim(@PathVariable("fileId") Long fileId) {
         Myfile myfile = new Myfile();
         myfile.setIsDeleted("1");
+        myfile.setFileId(fileId);
         Myfile update = myfileService.update(myfile);
-        if (update.getIsDeleted() == "1") //1为放入回收站
+        if (update.getIsDeleted().equalsIgnoreCase( "1")) //1为放入回收站
             return Result.ok("您的文件已放置回收站");
         else
             return Result.fail("删除失败！");
@@ -93,7 +91,7 @@ public class MyfileController {
      * @param userId
      * @return
      */
-    @GetMapping("/showReclaim/{userId}/{page}/{limit}")
+    @PostMapping("/showReclaim/{userId}/{page}/{limit}")
     @ApiOperation("查询用户回收站文件")
     public Result showReclaim(@PathVariable("userId") Long userId, @PathVariable("page") Integer page, @PathVariable("limit") Integer limit) {
         Myfile myfile = new Myfile();
@@ -109,7 +107,7 @@ public class MyfileController {
      * @param fileId
      * @return
      */
-    @GetMapping("/unReclaim/{fileId}")
+    @PostMapping("/unReclaim/{fileId}")
     @ApiOperation("恢复用户回收站文件")
     public Result unReclaim(@PathVariable("fileId") Long fileId) {
         Myfile myfile = new Myfile();
@@ -128,8 +126,8 @@ public class MyfileController {
      * @param userId
      * @return
      */
-    @GetMapping("/queryPrivate/{userId}/{page}/{limit}")
-    @ApiOperation("查询用户回收站文件")
+    @PostMapping("/queryPrivate/{userId}/{page}/{limit}")
+    @ApiOperation("查询个人私有文件")
     public Result queryPrivate(@PathVariable("userId") Long userId, @PathVariable("page") Integer page, @PathVariable("limit") Integer limit) {
         Myfile myfile = new Myfile();
         myfile.setIsShare("0"); //查询指定用户的私有文件
@@ -141,13 +139,14 @@ public class MyfileController {
     /**
      * 更改文件私有状态
      *
-     * @param userId
+     * @param fileId
      * @return
      */
-    @GetMapping("/queryPrivate/{fileId}/{isShare}")
-    @ApiOperation("查询用户回收站文件")
-    public Result queryPrivate(@PathVariable("fileId") Long userId, @PathVariable("isShare") String isShare) {
+    @PostMapping("/updatePrivate/{fileId}/{isShare}")
+    @ApiOperation("更改文件的私有状态")
+    public Result updatePrivate(@PathVariable("fileId") Long fileId, @PathVariable("isShare") String isShare) {
         Myfile myfile = new Myfile();
+        myfile.setFileId(fileId);
         myfile.setIsShare(isShare); //更改文件的私有状态
         myfile.setIsDeleted("0");//更改没有删除的文件
         Myfile update = myfileService.update(myfile);
