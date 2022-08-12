@@ -25,6 +25,11 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    /**
+     * 用户注册
+     * @param user
+     * @return
+     */
     @ApiOperation("用户注册")
     @PostMapping("/register")
     public Result insert(@RequestBody User user) {
@@ -33,6 +38,7 @@ public class UserController {
     }
 
     /**
+     * 用户登录
      * @param username
      * @param password
      * @return

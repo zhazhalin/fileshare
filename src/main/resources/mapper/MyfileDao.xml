@@ -26,11 +26,52 @@
         where file_id = #{fileId}
     </select>
 
-    <!--查询指定行数据-->
+    <!--根据条件查询并分页-->
     <select id="queryAllByLimit" resultMap="MyfileMap">
         select
           file_id, file_contentType, file_name, file_url, createTime, updateTime, is_deleted, dowload_count, description, file_img, file_size, file_user, is_share
         from myfile
+        <where>
+            <if test="fileId != null">
+                and file_id = #{fileId}
+            </if>
+            <if test="fileContenttype != null and fileContenttype != ''">
+                and file_contentType = #{fileContenttype}
+            </if>
+            <if test="fileName != null and fileName != ''">
+                and file_name LIKE concat('%',#{fileName},'%')
+            </if>
+            <if test="fileUrl != null and fileUrl != ''">
+                and file_url = #{fileUrl}
+            </if>
+            <if test="createtime != null">
+                and createTime = #{createtime}
+            </if>
+            <if test="updatetime != null">
+                and updateTime = #{updatetime}
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                and is_deleted = #{isDeleted}
+            </if>
+            <if test="dowloadCount != null">
+                and dowload_count = #{dowloadCount}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+            <if test="fileImg != null and fileImg != ''">
+                and file_img = #{fileImg}
+            </if>
+            <if test="fileSize != null">
+                and file_size = #{fileSize}
+            </if>
+            <if test="fileUser != null">
+                and file_user = #{fileUser}
+            </if>
+            <if test="isShare != null and isShare != ''">
+                and is_share = #{isShare}
+            </if>
+        </where>
         limit #{offset}, #{limit}
     </select>
 
@@ -48,7 +89,7 @@
                 and file_contentType = #{fileContenttype}
             </if>
             <if test="fileName != null and fileName != ''">
-                and file_name = #{fileName}
+                and file_name LIKE concat('%',#{fileName},'%')
             </if>
             <if test="fileUrl != null and fileUrl != ''">
                 and file_url = #{fileUrl}

@@ -39,8 +39,8 @@ public class MyfileServiceImpl implements MyfileService {
      * @return 对象列表
      */
     @Override
-    public List<Myfile> queryAllByLimit(int offset, int limit) {
-        return this.myfileDao.queryAllByLimit(offset, limit);
+    public List<Myfile> queryAllByLimit(Myfile myfile,int offset, int limit) {
+        return this.myfileDao.queryAllByLimit(myfile,offset, limit);
     }
 
     /**
@@ -78,12 +78,28 @@ public class MyfileServiceImpl implements MyfileService {
         return this.myfileDao.deleteById(fileId) > 0;
     }
 
+    /**
+     * 根据文件类型进行分类搜索
+     * @param type
+     * @return
+     */
     @Override
     public Result<List<Myfile>> queryByType(String type) {
         Myfile myfile=new Myfile();
-        myfile.setFileContenttype(type);
+        myfile.setFileContenttype(type);//根据文件类型搜索
+        myfile.setIsShare("1");//搜寻公开文件
         //根据类型查询出所有文件
         List<Myfile> typeAllFile=myfileDao.queryAll(myfile);
         return Result.ok(typeAllFile);
+    }
+
+    @Override
+    public List<Myfile> searchFile(String fileName) {
+        //根据文件名称进行模糊查询(查询所有公开文件)
+        Myfile myfile=new Myfile();
+        myfile.setIsShare("1");
+        myfile.setFileName(fileName);
+        List<Myfile> myfiles=myfileDao.queryAll(myfile);
+        return myfiles;
     }
 }

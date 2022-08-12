@@ -28,7 +28,7 @@ public interface MyfileService {
      * @param limit  查询条数
      * @return 对象列表
      */
-    List<Myfile> queryAllByLimit(int offset, int limit);
+    List<Myfile> queryAllByLimit(Myfile myfile,int offset, int limit);
 
     /**
      * 新增数据
@@ -54,5 +54,7 @@ public interface MyfileService {
      */
     boolean deleteById(Long fileId);
 
-    Result queryByType(String type);
+    Result<List<Myfile>> queryByType(String type);
+
+    List<Myfile> searchFile(String fileName);
 }
