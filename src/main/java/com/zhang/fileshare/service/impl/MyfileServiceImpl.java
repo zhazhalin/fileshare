@@ -79,8 +79,11 @@ public class MyfileServiceImpl implements MyfileService {
     }
 
     @Override
-    public Result queryByType(String type) {
-
-        return Result.ok();
+    public Result<List<Myfile>> queryByType(String type) {
+        Myfile myfile=new Myfile();
+        myfile.setFileContenttype(type);
+        //根据类型查询出所有文件
+        List<Myfile> typeAllFile=myfileDao.queryAll(myfile);
+        return Result.ok(typeAllFile);
     }
 }
