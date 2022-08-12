@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhang.fileshare.dao.UserDao">
+
+    <resultMap type="com.zhang.fileshare.entity.User" id="UserMap">
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="userNickname" column="user_nickname" jdbcType="VARCHAR"/>
+        <result property="userPwd" column="user_pwd" jdbcType="VARCHAR"/>
+        <result property="userSalt" column="user_salt" jdbcType="VARCHAR"/>
+        <result property="userPhone" column="user_phone" jdbcType="VARCHAR"/>
+        <result property="userEmail" column="user_email" jdbcType="VARCHAR"/>
+        <result property="userQq" column="user_QQ" jdbcType="VARCHAR"/>
+        <result property="userSex" column="user_sex" jdbcType="VARCHAR"/>
+        <result property="userBirthday" column="user_birthday" jdbcType="VARCHAR"/>
+        <result property="userImg" column="user_img" jdbcType="VARCHAR"/>
+        <result property="createtime" column="createTime" jdbcType="VARCHAR"/>
+        <result property="updatetime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="deletetime" column="deleteTime" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        select
+          user_id, user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ, user_sex, user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted
+        from user
+        where user_id = #{userId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select
+          user_id, user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ, user_sex, user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted
+        from file-share.user
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserMap">
+        select
+        user_id, user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ, user_sex,
+        user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted
+        from file-share.user
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName}
+            </if>
+            <if test="userNickname != null and userNickname != ''">
+                and user_nickname = #{userNickname}
+            </if>
+            <if test="userPwd != null and userPwd != ''">
+                and user_pwd = #{userPwd}
+            </if>
+            <if test="userSalt != null and userSalt != ''">
+                and user_salt = #{userSalt}
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                and user_phone = #{userPhone}
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userQq != null and userQq != ''">
+                and user_QQ = #{userQq}
+            </if>
+            <if test="userSex != null and userSex != ''">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userBirthday != null and userBirthday != ''">
+                and user_birthday = #{userBirthday}
+            </if>
+            <if test="userImg != null and userImg != ''">
+                and user_img = #{userImg}
+            </if>
+            <if test="createtime != null and createtime != ''">
+                and createTime = #{createtime}
+            </if>
+            <if test="updatetime != null">
+                and updateTime = #{updatetime}
+            </if>
+            <if test="deletetime != null">
+                and deleteTime = #{deletetime}
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                and is_deleted = #{isDeleted}
+            </if>
+        </where>
+    </select>
+    <select id="queryByUsername" resultMap="UserMap">
+        select
+          user_id, user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ, user_sex, user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted
+        from user
+        where user_name = #{username}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
+        insert into file-share.user(user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ, user_sex, user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted)
+        values (#{userName}, #{userNickname}, #{userPwd}, #{userSalt}, #{userPhone}, #{userEmail}, #{userQq}, #{userSex}, #{userBirthday}, #{userImg}, #{createtime}, #{updatetime}, #{deletetime}, #{isDeleted})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="userId" useGeneratedKeys="true">
+        insert into file-share.user(user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ,
+        user_sex, user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userName}, #{entity.userNickname}, #{entity.userPwd}, #{entity.userSalt}, #{entity.userPhone},
+            #{entity.userEmail}, #{entity.userQq}, #{entity.userSex}, #{entity.userBirthday}, #{entity.userImg},
+            #{entity.createtime}, #{entity.updatetime}, #{entity.deletetime}, #{entity.isDeleted})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="userId" useGeneratedKeys="true">
+        insert into file-share.user(user_name, user_nickname, user_pwd, user_salt, user_phone, user_email, user_QQ,
+        user_sex, user_birthday, user_img, createTime, updateTime, deleteTime, is_deleted)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userName}, #{entity.userNickname}, #{entity.userPwd}, #{entity.userSalt}, #{entity.userPhone},
+            #{entity.userEmail}, #{entity.userQq}, #{entity.userSex}, #{entity.userBirthday}, #{entity.userImg},
+            #{entity.createtime}, #{entity.updatetime}, #{entity.deletetime}, #{entity.isDeleted})
+        </foreach>
+        on duplicate key update
+        user_name = values(user_name) , user_nickname = values(user_nickname) , user_pwd = values(user_pwd) , user_salt
+        = values(user_salt) , user_phone = values(user_phone) , user_email = values(user_email) , user_QQ =
+        values(user_QQ) , user_sex = values(user_sex) , user_birthday = values(user_birthday) , user_img =
+        values(user_img) , createTime = values(createTime) , updateTime = values(updateTime) , deleteTime =
+        values(deleteTime) , is_deleted = values(is_deleted)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update file-share.user
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="userNickname != null and userNickname != ''">
+                user_nickname = #{userNickname},
+            </if>
+            <if test="userPwd != null and userPwd != ''">
+                user_pwd = #{userPwd},
+            </if>
+            <if test="userSalt != null and userSalt != ''">
+                user_salt = #{userSalt},
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                user_phone = #{userPhone},
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                user_email = #{userEmail},
+            </if>
+            <if test="userQq != null and userQq != ''">
+                user_QQ = #{userQq},
+            </if>
+            <if test="userSex != null and userSex != ''">
+                user_sex = #{userSex},
+            </if>
+            <if test="userBirthday != null and userBirthday != ''">
+                user_birthday = #{userBirthday},
+            </if>
+            <if test="userImg != null and userImg != ''">
+                user_img = #{userImg},
+            </if>
+            <if test="createtime != null and createtime != ''">
+                createTime = #{createtime},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime},
+            </if>
+            <if test="deletetime != null">
+                deleteTime = #{deletetime},
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                is_deleted = #{isDeleted},
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from file-share.user where user_id = #{userId}
+    </delete>
+
+</mapper>
+
